@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Nathan Payelleville - DevOps Engineer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0a192f;
+            --text-primary: #ccd6f6;
+            --text-secondary: #8892b0;
+            --accent-color: #64ffda;
+            --card-bg: #112240;
+            --font-main: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- Header & Nav --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
+            background: rgba(10, 25, 47, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        nav ul {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        nav a:hover { color: var(--accent-color); }
+
+        .menu-toggle { display: none; color: var(--accent-color); font-size: 1.5rem; cursor: pointer; }
+
+        /* --- Sections Générales --- */
+        section {
+            padding: 100px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            color: var(--text-primary);
+        }
+
+        h2::before {
+            content: "0" counter(section) ".";
+            counter-increment: section;
+            color: var(--accent-color);
+            margin-right: 10px;
+            font-family: monospace;
+            font-size: 1.5rem;
+        }
+
+        h2::after {
+            content: "";
+            flex-grow: 1;
+            height: 1px;
+            background: #233554;
+            margin-left: 20px;
+        }
+
+        body { counter-reset: section; }
+
+        /* --- Hero Section --- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column; /* Mobile first: column */
+            justify-content: center;
+            align-items: center; /* Centré par défaut */
+            padding-top: 0;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            order: 2; /* Texte en dessous sur mobile si besoin, ou on garde standard */
+        }
+
+        .profile-img-container {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-color);
+            overflow: hidden;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(100, 255, 218, 0.2);
+            order: 1;
+        }
+
+        .profile-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .hero h3 {
+            font-size: 2rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 540px;
+            margin: 0 auto 30px auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            border-radius: 4px;
+            font-family: monospace;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background: rgba(100, 255, 218, 0.1);
+        }
+
+        /* --- Skills --- */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .skill-category {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 5px;
+            transition: transform 0.3s;
+        }
+
+        .skill-category:hover { transform: translateY(-5px); }
+
+        .skill-category h3 {
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .skill-list li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 10px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .skill-list li::before {
+            content: "▹";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+        }
+
+        /* --- Experience --- */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .job-card {
+            background: var(--card-bg);
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .job-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .company-logo {
+            width: 50px;
+            height: 50px;
+            background: #fff; /* Fond blanc pour les logos */
+            border-radius: 5px;
+            object-fit: contain;
+            padding: 2px;
+        }
+
+        .job-title h3 { font-size: 1.2rem; color: var(--text-primary); }
+        .job-title span { color: var(--accent-color); font-family: monospace; font-size: 0.9rem; }
+        
+        .job-desc ul { margin-top: 10px; }
+        .job-desc li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        .job-desc li::before { content: "▹"; position: absolute; left: 0; color: var(--accent-color); }
+
+        /* --- HomeLab --- */
+        .homelab-intro {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+        
+        .osiris-title { color: var(--accent-color); font-weight: bold; }
+
+        .lab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .machine-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .machine-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px -15px rgba(2,12,27,0.7); }
+
+        .machine-img {
+            width: 100%;
+            height: 200px;
+            background-color: #233554;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .machine-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .machine-info { padding: 20px; }
+        .machine-info h3 { color: var(--accent-color); margin-bottom: 10px; }
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #233554;
+            padding-bottom: 5px;
+        }
+        .spec-label { font-weight: bold; color: var(--text-primary); }
+        .spec-val { color: var(--text-secondary); text-align: right; }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            background: #020c1b;
+        }
+
+        .social-links {
+            margin-bottom: 15px;
+        }
+        
+        .social-links a {
+            font-size: 1.5rem;
+            margin: 0 10px;
+            color: var(--text-primary);
+        }
+        
+        .social-links a:hover { color: var(--accent-color); }
+
+        /* --- Responsive Mobile --- */
+        @media (min-width: 768px) {
+            .hero {
+                flex-direction: row;
+                text-align: left;
+                padding-left: 100px; /* Offset navigation */
+                justify-content: flex-start;
+                gap: 50px;
+            }
+            .hero-content { order: 1; text-align: left; margin: 0; }
+            .profile-img-container { order: 2; width: 300px; height: 300px; margin: 0; }
+            .hero h1 { font-size: 4rem; }
+            .hero p { margin: 0 0 30px 0; }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 20px 20px; }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px;
+                right: 0;
+                background: var(--card-bg);
+                width: 100%;
+                padding: 20px;
+                text-align: center;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            }
+            nav ul.active { display: flex; }
+            .menu-toggle { display: block; }
+            section { padding: 60px 20px; }
+            h2::after { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">NP.</div>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <nav>
+            <ul id="nav-list">
+                <li><a href="#about" onclick="toggleMenu()">À propos</a></li>
+                <li><a href="#competences" onclick="toggleMenu()">Compétences</a></li>
+                <li><a href="#experience" onclick="toggleMenu()">Expérience</a></li>
+                <li><a href="#homelab" onclick="toggleMenu()">HomeLab</a></li>
+                <li><a href="#contact" onclick="toggleMenu()">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="about">
+        <div class="hero-content">
+            <span style="color: var(--accent-color); font-family: monospace;">Bonjour, je suis</span>
+            <h1>Nathan Payelleville.</h1>
+            <h3>Architecte Infrastructure & DevOps.</h3>
+            <p>
+                Actuellement en fin de Mastère spécialisé, je transforme l'infrastructure en code.
+                Passionné par l'automatisation, la virtualisation et le cloud, je cherche à déployer mes compétences en 
+                <strong>CDI en tant qu'Ingénieur DevOps</strong> dès Septembre 2026. Basé à Toulouse.
+            </p>
+            <a href="mailto:nathanpayelleville@gmail.com" class="btn">Me Contacter</a>
+            <a href="https://www.linkedin.com/in/nathan-payelleville-a17035266/" target="_blank" class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        </div>
+        <div class="profile-img-container">
+            <img src="profile.jpg" alt="Nathan Payelleville">
+        </div>
+    </section>
+
+    <section id="competences">
+        <h2>Compétences</h2>
+        <div class="skills-grid">
+            <div class="skill-category">
+                <h3><i class="fas fa-server"></i> Virtualisation</h3>
+                <ul class="skill-list">
+                    <li>Proxmox, VMware ESXi</li>
+                    <li>Nutanix, HyperV</li>
+                    <li>Clustering & HA</li>
+                </ul>
+            </div>
+            
+            <div class="skill-category">
+                <h3><i class="fas fa-code-branch"></i> DevOps & IaC</h3>
+                <ul class="skill-list">
+                    <li>Terraform / Ansible</li>
+                    <li>Docker / Podman</li>
+                    <li>Kubernetes (RKE2, Rancher, Talos)</li>
+                    <li>CI/CD Pipelines</li>
+                    <li>GitOps (ArgoCD)</li>
+                </ul>
+            </div>
+
+            <div class="skill-category">
+                <h3><i class="fab fa-linux"></i> Système & Cloud</h3>
+                <ul class="skill-list">
+                    <li>Linux (Debian, Ubuntu, SLES)</li>
+                    <li>Windows Server / AD / PowerShell</li>
+                    <li>Azure / AWS (Débutant)</li>
+                    <li>Bash Scripting</li>
+                </ul>
+            </div>
+
+            <div class="skill-category">
+                <h3><i class="fas fa-users"></i> Soft Skills</h3>
+                <ul class="skill-list">
+                    <li>Travail d'équipe & Collaboration</li>
+                    <li>Documentation (Confluence)</li>
+                    <li>Autonomie & Rigueur</li>
+                    <li>Curiosité technique</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience">
+        <h2>Expérience Professionnelle</h2>
+        <div class="timeline">
+            
+            <div class="job-card">
+                <div class="job-header">
+                    <img src="logo-airbus.png" alt="Airbus" class="company-logo" onerror="this.style.display='none'"> 
+                    <div class="job-title">
+                        <h3>Architecte en Infrastructure IT <span class="at">@ Airbus</span></h3>
+                        <span>Sept 2024 - Sept 2026 | Alternance</span>
+                    </div>
+                </div>
+                <div class="job-desc">
+                    <ul>
+                        <li>Déploiement de clusters Kubernetes sécurisés.</li>
+                        <li>Mise en place de PoC (OS Immutable, Déploiement PXE, Suse EIB).</li>
+                        <li>Infrastructure as Code (Terraform, Ansible).</li>
+                        <li>Virtualisation avancée (Proxmox / Nutanix).</li>
+                        <li>Contribution R&T et Chefferie de projet.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="job-card">
+                <div class="job-header">
+                    <img src="logo-republic.png" alt="Republic Technologies" class="company-logo" onerror="this.style.display='none'">
+                    <div class="job-title">
+                        <h3>Admin Systèmes et Réseaux <span class="at">@ Republic Tech.</span></h3>
+                        <span>Sept 2023 - Sept 2024 | Alternance</span>
+                    </div>
+                </div>
+                <div class="job-desc">
+                    <ul>
+                        <li>Elaboration d'une infrastructure complète de test.</li>
+                        <li>Automatisation de création/gestion de machines (Ansible).</li>
+                        <li>Gestion de projet et support niveau 2.</li>
+                        <li>Utilisation de PostgreSQL et rôle Ansible.</li>
+                    </ul>
+                </div>
+            </div>
+
+             <div class="job-card">
+                <div class="job-header">
+                     <img src="logo-arago.png" alt="Lycée François Arago" class="company-logo" onerror="this.style.display='none'">
+                    <div class="job-title">
+                        <h3>Admin Systèmes et Réseaux <span class="at">@ Lycée F. Arago</span></h3>
+                        <span>Jan 2023 - Fév 2023 | Stage</span>
+                    </div>
+                </div>
+                <div class="job-desc">
+                    <ul>
+                        <li>Migration de parc vers Windows 10.</li>
+                        <li>Intégration Linux Mint avec OS personnalisé.</li>
+                        <li>Support utilisateurs via GLPI.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="job-card">
+               <div class="job-header">
+                    <img src="logo-elsan.png" alt="Clinique Saint-Pierre" class="company-logo" onerror="this.style.display='none'">
+                   <div class="job-title">
+                       <h3>Technicien Informatique <span class="at">@ Clinique St-Pierre</span></h3>
+                       <span>Mai 2022 - Juin 2022 | Stage</span>
+                   </div>
+               </div>
+               <div class="job-desc">
+                   <ul>
+                       <li>Refonte infrastructure informatique des blocs opératoires.</li>
+                       <li>Chiffrement BitLocker et déploiement d'images.</li>
+                       <li>Supervision via GLPI et PRTG.</li>
+                   </ul>
+               </div>
+           </div>
+
+        </div>
+    </section>
+
+    <section id="homelab">
+        <h2>Mon HomeLab</h2>
+        <div class="homelab-intro">
+            <p>Mon laboratoire personnel se nomme <span class="osiris-title">OSIRIS</span>. C'est ici que j'expérimente, casse et reconstruis mes infrastructures pour maîtriser les technologies que j'utilise en entreprise.</p>
+        </div>
+
+        <div class="lab-grid">
+            <div class="machine-card">
+                <div class="machine-img">
+                    <img src="server1.jpg" alt="Serveur OSIRIS PVE1" onerror="this.src='https://via.placeholder.com/400x300/112240/64ffda?text=OSIRISPVE1'">
+                </div>
+                <div class="machine-info">
+                    <h3>OSIRISPVE1</h3>
+                    <div class="spec-row">
+                        <span class="spec-label">Rôle</span>
+                        <span class="spec-val">Hyperviseur Proxmox Principal</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">CPU</span>
+                        <span class="spec-val">Ryzen 9 6900HX<br><small>(8c/16t)</small></span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">RAM</span>
+                        <span class="spec-val">32 Go LPDDR5</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="machine-card">
+                <div class="machine-img">
+                    <img src="server2.jpg" alt="Serveur OSIRIS PVE2" onerror="this.src='https://via.placeholder.com/400x300/112240/64ffda?text=OSIRISPVE2'">
+                </div>
+                <div class="machine-info">
+                    <h3>OSIRISPVE2</h3>
+                    <div class="spec-row">
+                        <span class="spec-label">Rôle</span>
+                        <span class="spec-val">Hyperviseur Proxmox Secondaire</span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">CPU</span>
+                        <span class="spec-val">Intel i7-12650H<br><small>(10c/16t)</small></span>
+                    </div>
+                    <div class="spec-row">
+                        <span class="spec-label">RAM</span>
+                        <span class="spec-val">32 Go DDR4</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="education">
+        <h2>Formation</h2>
+        <div class="skills-grid">
+            <div class="skill-category">
+                <h3>Mastère Expert Systèmes & Réseaux</h3>
+                <p style="color:var(--text-secondary)">Option Cloud | IPI Blagnac</p>
+                <p style="font-size:0.9rem; color:var(--text-secondary)">2024 - 2026 (En cours)</p>
+            </div>
+            <div class="skill-category">
+                <h3>Bachelor Admin Systèmes & Réseaux</h3>
+                <p style="color:var(--text-secondary)">IPI Blagnac</p>
+                <p style="font-size:0.9rem; color:var(--text-secondary)">Admis félicitations du jury</p>
+            </div>
+            <div class="skill-category">
+                <h3>Certifications</h3>
+                <ul class="skill-list">
+                    <li>Cisco CCNA 1 & 2</li>
+                    <li>TryHackMe (DevSecOps)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="social-links">
+            <a href="https://www.linkedin.com/in/nathan-payelleville-a17035266/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="mailto:nathanpayelleville@gmail.com"><i class="fas fa-envelope"></i></a>
+            <a href="tel:+33786572424"><i class="fas fa-phone"></i></a>
+        </div>
+        <p>Développé par Nathan Payelleville. Basé à Toulouse (31500).</p>
+        <p style="margin-top: 10px; font-size: 0.8rem;">Permis B - Véhiculé</p>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const nav = document.getElementById('nav-list');
+            nav.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
